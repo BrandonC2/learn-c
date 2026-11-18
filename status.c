@@ -11,14 +11,25 @@ enum {
 int main(void)
 {
 
-	uint8_t status = 0;
-	
-	// TODO: Turn ON POWER_OK and LINK_UP.
-	// Do not modify the other bits.
-	
-	status |= (STATUS_POWER_OK | STATUS_LINK_UP);
+	uint8_t status = STATUS_POWER_OK |
+			 STATUS_LINK_UP  |
+			 STATUS_RX_READY;
 
-	print("Status: %u\n", (unsigned)status);
+	printf("Status: %u\n", (unsigned)status);
+
+	if (status & STATUS_LINK_UP) {
+		printf("Network connected\n");
+	}
+
+	uint8_t required = STATUS_POWER_OK | STATUS_LINK_UP;
+
+	if((status & required) == required){
+		printf("Ready to transmit\n");
+	}
+
+	status &= ~STATUS_RX_READY;
+
+	printf("After: %u\n", (unsigned)status);
 
 	return 0;
-};
+}
